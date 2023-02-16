@@ -1,6 +1,11 @@
 venv
 __pycache__
 .DS_store
-input/*
-output/*
+fix_tg_exif/input/*
+fix_tg_exif/output/*
+sort_icloud_media/input/*
+sort_icloud_media/output/*
+sort_icloud_media/garbage/*
+vk_photo_grabber/downloads/*
+.env
 !.gitkeep
