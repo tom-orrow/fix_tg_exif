@@ -11,6 +11,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 from exif import Image
 
+DIR = os.path.dirname(__file__)
+
 async def create_task(session, item):
     url = item['attachment']['photo']['sizes'][-1]['url']
     date = datetime.fromtimestamp(item['attachment']['photo']['date'])
@@ -19,7 +21,7 @@ async def create_task(session, item):
     except Exception as e:
         print(image_ext)
         raise e
-    folder_path = f"downloads/{date.strftime('%Y')}/{date.strftime('%m')}"
+    folder_path = f"{DIR}/downloads/{date.strftime('%Y')}/{date.strftime('%m')}"
     os.makedirs(folder_path, exist_ok=True)
     tmp_image_name = f"IMG_{date.strftime('%Y%m%d_%H%M%S')}_tmp_{random.randint(0, 1000000)}_" + image_ext
     image_name = f"IMG_{date.strftime('%Y%m%d_%H%M%S')}_vk_" + image_ext
