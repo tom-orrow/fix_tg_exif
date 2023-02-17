@@ -9,7 +9,7 @@ DIR = os.path.dirname(__file__)
 
 def modify_exif(filepath: str):
     date = re.findall(r'.+?photo_.+?@([^\.]+)\.', filepath)[0]
-    filename = re.findall(r'.+?\/(photo_.+$)', filepath)[0]
+    new_filename = re.findall(r'.+?\/photo_.+@(.+$)', filepath)[0]
     dt = datetime.strptime(date, '%d-%m-%Y_%H-%M-%S')
 
     folder_path = f"{DIR}/output/{dt.strftime('%Y')}/{dt.strftime('%m')}"
@@ -20,8 +20,8 @@ def modify_exif(filepath: str):
     img.DateTime = exif_dt
     img.DateTimeOriginal = exif_dt
     img.DateTimeDigitized = exif_dt
-
-    with open(f'{folder_path}/{filename}', 'wb') as f:
+    
+    with open(f'{folder_path}/{new_filename}', 'wb') as f:
         f.write(img.get_file())
 
 def main():
