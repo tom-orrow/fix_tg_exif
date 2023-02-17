@@ -25,7 +25,7 @@ def modify_exif(filepath: str):
         f.write(img.get_file())
 
 def main():
-    for filename in glob.iglob('{DIR}/input/**/photo_*@*.*', recursive=True):
+    for filename in glob.iglob(f'{DIR}/input/**/photo_*@*.*', recursive=True):
         if re.search(r'_thumb\..+$', filename):
             continue
         
