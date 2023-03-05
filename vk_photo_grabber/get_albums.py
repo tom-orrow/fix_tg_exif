@@ -13,21 +13,22 @@ from exif import Image
 
 DIR = os.path.dirname(__file__)
     
-async def get_albums(vk):
-    res = vk.photos.getAlbums()
+async def get_albums(vk, albums_owner_id):
+    res = vk.photos.getAlbums(owner_id=albums_owner_id)
     if not res['items']:
         return
 
     return dict((x['id'], {'title': x['title']}) for x in res['items'])
 
 
-async def get_photos(vk, albums: dict):
+async def get_photos(vk, albums_owner_id, albums: dict):
     offset = 0
     count_per_page = 200
     
     while True:
         print(f'Number of images: {offset}')
         res = vk.photos.getAll(
+            owner_id=albums_owner_id,
             count=count_per_page,
             offset=offset
         )
@@ -118,11 +119,12 @@ async def main():
     load_dotenv()
 
     vk_token = os.getenv('TOKEN')
+    vk_albums_owner_id = os.getenv('ALBUMS_OWNER_ID')
     vk_session = vk_api.VkApi(token=vk_token, scope='messages')
     vk = vk_session.get_api()
 
-    albums = await get_albums(vk)
-    albums_with_photos = await get_photos(vk, albums)
+    albums = await get_albums(vk, vk_albums_owner_id)
+    albums_with_photos = await get_photos(vk, vk_albums_owner_id, albums)
     await scrape_albums(albums_with_photos)
 
 if __name__ == '__main__':
